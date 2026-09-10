@@ -829,6 +829,7 @@ footer .foot-org{color:#cbd5e1;}
     <div class="card">
       <div class="linkrow">
         <a class="linkbtn" href="https://portal.iclasspro.com/calisanmarcos" target="_blank"><span class="ico">📅</span> iClass Portal</a>
+        <a class="linkbtn" href="https://app.iclasspro.com/portal/calisanmarcos/classes" target="_blank"><span class="ico">🎓</span> Fall/Winter Classes (50% off)</a>
         <a class="linkbtn" href="https://caliproshop.com" target="_blank"><span class="ico">🛍️</span> Cali Pro Shop (swag)</a>
         <a class="linkbtn" href="https://californiaallstarsproshop.com" target="_blank"><span class="ico">👕</span> Rebel Uniform Shop</a>
         <a class="linkbtn" href="https://usasfmembers.net" target="_blank"><span class="ico">🪪</span> USASF Membership</a>
@@ -1035,6 +1036,7 @@ const competitions = [
     housing:"optional", rosterLink:"https://www.thespiritnetwork.net/sd-tsc", rosterLabel:"Event page (roster posts closer to date)"},
   {name:"ACSC Champs Grand Nationals", loc:"Aurora, CO · Gaylord Rockies Resort &amp; Convention Center", address:"Gaylord Rockies Resort & Convention Center, Aurora, CO", start:"2026-12-19", end:"2026-12-20", travel:"required",
     detail:"Team showoffs Wed 12/16. Fly in Thursday 12/17, fly out Monday 12/21. Recommended: stay on-site at the Gaylord Rockies Resort.", housing:"required", bookingDate:"2026-09-10", travelStart:"2026-12-17", travelEnd:"2026-12-21",
+    bookingLinks:[{label:"Group block booking info (PDF)", url:"https://6q39gws4.r.us-east-1.awstrack.me/L0/https:%2F%2Ffiles.iclasspro.com%2F32838%2Fstudents%2F1789007956.California_All_Stars_ATHLETES_-_Champs_-_Group_Block_Preview-compressed.pdf/1/010001a0893458f4-ce3ddfa0-60d9-49fd-982b-bd23d340dc62-000000/k0NB4BkE02Kl9kEYYv5ArnHOvho=473"}],
     flightSearch:"Flights to Denver from San Diego, departing 2026-12-17, returning 2026-12-21",
     rosterLink:"https://www.varsity.com/download-event-app/", rosterLabel:"Team roster via Varsity Spirit Event App"},
   {name:"The Majors", loc:"Indianapolis, IN · Indiana Convention Center", address:"Indiana Convention Center, Indianapolis, IN", start:"2027-01-15", end:"2027-01-15", dateLabel:"January 2027", attending:false, teams:"Lady Bullets"},
@@ -1094,16 +1096,18 @@ const programFees = [
 ];
 
 const feed = [
-  {date:"2026-09-08", tag:"new", title:"Fall/Winter Classes Open", body:'Began Sept 8 · CALI Team families get 50% off all classes. <a href="https://app.iclasspro.com/portal/calisanmarcos/classes" target="_blank">Browse classes & enroll →</a>'},
   {date:"2026-09-11", expires:"2026-09-12", tag:"practice", title:"Friday practices starting", body:"Fridays effective 9/11/26 — Y2K 6:30–8:30 PM."},
   {date:"2026-09-15", expires:"2026-09-16", tag:"deadline", title:"Dance Choreo schedule coming 9/15", body:"CALI is finalizing the full Dance Choreo schedule for all teams — expect it posted by Tuesday, Sept 15."},
-  {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>'}
+  {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>'},
+  {date:"2026-10-03", expires:"2026-10-04", tag:"event", title:"Cali Coed Stunt & Tumble Clinic — Oct 3", body:"6:00–8:00 PM · $50/person, pizza included · stunt & tumble with the reigning Worlds &amp; NCA Champs. Venmo @MiaMG (include athlete's name &amp; team) — see the Events tab for full details."}
 ];
 
 const fundraisers = [
-  {emoji:"🏨", title:"ACSC Housing Opens 9/10", date:"2026-09-10", end:"2026-09-10", cat:"duedate", meta:"Required Stay-to-Play hotel block for ACSC Champs Grand Nationals (Aurora, CO) opens Sept 10. Check email/iClass for the booking link, then mark it booked on the Comp Schedule tab."},
+  {emoji:"🏨", title:"ACSC Housing Opens 9/10", date:"2026-09-10", end:"2026-09-10", cat:"duedate", meta:'Required Stay-to-Play hotel block for ACSC Champs Grand Nationals (Aurora, CO) opens Sept 10. <a href="https://6q39gws4.r.us-east-1.awstrack.me/L0/https:%2F%2Ffiles.iclasspro.com%2F32838%2Fstudents%2F1789007956.California_All_Stars_ATHLETES_-_Champs_-_Group_Block_Preview-compressed.pdf/1/010001a0893458f4-ce3ddfa0-60d9-49fd-982b-bd23d340dc62-000000/k0NB4BkE02Kl9kEYYv5ArnHOvho=473" target="_blank">View group block booking info (PDF) →</a> Then mark it booked on the Comp Schedule tab.'},
   {emoji:"🎬", title:"Sparkle Movie Night", date:"2026-09-12", end:"2026-09-12", meta:"Sat, Sep 12, 2026 · doors 7:00p, movie 7:45p, pickup 9:30p · $10/person (incl. popcorn), concessions $1–2 · Cali Gym parking lot", extra:"Showing: Bring It On",
     pay:["Cash at the door","Zelle: 562-240-3450 (Karin)","Venmo: search \"Karin\" — confirm exact @handle in team chat"]},
+  {emoji:"🤸", title:"Cali Coed Stunt & Tumble Clinic", date:"2026-10-03", end:"2026-10-03", meta:"Sat, Oct 3, 2026 · 6:00–8:00 PM · $50/person, pizza included · Stunt & tumble with the reigning back-to-back Worlds Champs & NCA Champs (Cali Coed)", extra:"CCOD bow +$10 — note it in your Venmo comment if you'd like one",
+    pay:["Venmo: @MiaMG — include athlete's name and current team"]},
   {emoji:"🎉", title:"In-house Show-Offs", date:"2026-10-24", end:"2026-10-24", meta:"Sat, Oct 24, 2026 — details to come in team chat."},
   {emoji:"🎃", title:"CALI Trunk or Treat", date:"2026-10-28", end:"2026-10-29", calDate:"2026-10-29", meta:"Oct 28–29, 2026 — details to come in team chat."},
   {emoji:"📸", title:"Team Photo Days", date:"2026-12-01", end:"2026-12-02", meta:"Dec 1–2, 2026 · San Marcos — details to come in team chat."}
