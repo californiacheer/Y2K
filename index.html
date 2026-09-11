@@ -829,10 +829,8 @@ footer .foot-org{color:#cbd5e1;}
     <div class="card">
       <div class="linkrow">
         <a class="linkbtn" href="https://portal.iclasspro.com/calisanmarcos" target="_blank"><span class="ico">📅</span> iClass Portal</a>
-        <a class="linkbtn" href="https://app.iclasspro.com/portal/calisanmarcos/classes" target="_blank"><span class="ico">🎓</span> Fall/Winter Classes (50% off)</a>
-        <a class="linkbtn" href="https://caliproshop.com" target="_blank"><span class="ico">🛍️</span> Cali Pro Shop (swag)</a>
+        <a class="linkbtn" href="https://caliproshop.com" target="_blank"><span class="ico">🛍️</span> Cali Pro Shop</a>
         <a class="linkbtn" href="https://californiaallstarsproshop.com" target="_blank"><span class="ico">👕</span> Rebel Uniform Shop</a>
-        <a class="linkbtn" href="https://usasfmembers.net" target="_blank"><span class="ico">🪪</span> USASF Membership</a>
         <a class="linkbtn" href="https://calisanmarcos.fullslate.com" target="_blank"><span class="ico">🤸</span> Book Private Lesson</a>
         <a class="linkbtn" href="https://app.eventpipe.com/event/1525a7d2-eb0c-4823-8240-3e4895689ee5/inactive" target="_blank"><span class="ico">🏨</span> ACSC Housing Block</a>
       </div>
@@ -877,7 +875,7 @@ footer .foot-org{color:#cbd5e1;}
 
   <!-- FUNDRAISERS & EVENTS -->
   <section class="panel" id="panel-fundraisers">
-    <div class="section-title">Active &amp; Recent</div>
+    <div class="section-title">Heads Up</div>
     <div class="card" id="fundList"></div>
 
     <div class="section-title">Open Gym (Fridays)</div>
@@ -1097,16 +1095,17 @@ const programFees = [
 ];
 
 const feed = [
-  {date:"2026-09-11", expires:"2026-09-16", tag:"deadline", title:"\"Fight for the Cure\" shirt pre-order — closes 9/16", body:'CALI\'s breast cancer awareness tee — 100% of proceeds go to UCSD Moore\'s Cancer Center. Pre-order only, closes Wed 9/16 at midnight, delivered first week of October. <a href="https://caliproshop.com/collections/pre-orders" target="_blank">Order now →</a>'},
-  {date:"2026-09-11", expires:"2026-09-12", tag:"practice", title:"Friday practices starting", body:"Fridays effective 9/11/26 — Y2K 6:30–8:30 PM."},
+  {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"\"Fight for the Cure\" shirt pre-order — closes 9/16", body:'CALI\'s breast cancer awareness tee — 100% of proceeds go to UCSD Moore\'s Cancer Center. Pre-order only, closes Wed 9/16 at midnight, delivered first week of October. <a href="https://caliproshop.com/collections/pre-orders" target="_blank">Order now →</a>'},
   {date:"2026-09-15", expires:"2026-09-16", tag:"deadline", title:"Dance Choreo schedule coming 9/15", body:"CALI is finalizing the full Dance Choreo schedule for all teams — expect it posted by Tuesday, Sept 15."},
-  {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>'},
+  {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>', actionRequired:true, dueDate:"2026-09-16"},
   {date:"2026-10-03", expires:"2026-10-04", tag:"event", title:"Cali Coed Stunt & Tumble Clinic — Oct 3", body:"6:00–8:00 PM · $50/person, pizza included · stunt & tumble with the reigning Worlds &amp; NCA Champs. Venmo @MiaMG (include athlete's name &amp; team) — see the Events tab for full details."}
 ];
 
 const fundraisers = [
+  {emoji:"🤸‍♀️", title:"Friday practices starting", date:"2026-09-11", end:"2026-09-11", meta:"Fridays effective 9/11/26 — Y2K 6:30–8:30 PM."},
   {emoji:"🎬", title:"Sparkle Movie Night", date:"2026-09-12", end:"2026-09-12", meta:"Sat, Sep 12, 2026 · doors 7:00p, movie 7:45p, pickup 9:30p · $10/person (incl. popcorn), concessions $1–2 · Cali Gym parking lot", extra:"Showing: Bring It On",
     pay:["Cash at the door","Zelle: 562-240-3450 (Karin)","Venmo: search \"Karin\" — confirm exact @handle in team chat"]},
+  {emoji:"💃", title:"Dance Choreo", meta:"Date TBD — CALI is finalizing the full schedule for all teams."},
   {emoji:"🤸", title:"Cali Coed Stunt & Tumble Clinic", date:"2026-10-03", end:"2026-10-03", meta:"Sat, Oct 3, 2026 · 6:00–8:00 PM · $50/person, pizza included · Stunt & tumble with the reigning back-to-back Worlds Champs & NCA Champs (Cali Coed)", extra:"CCOD bow +$10 — note it in your Venmo comment if you'd like one",
     pay:["Venmo: @MiaMG — include athlete's name and current team"]},
   {emoji:"🎉", title:"In-house Show-Offs", date:"2026-10-24", end:"2026-10-24", meta:"Sat, Oct 24, 2026 — details to come in team chat."},
@@ -1252,21 +1251,39 @@ function currentWeekRange(){
   return {monday, sunday};
 }
 
+function isActionPromoted(f, now){
+  // An "action required" feed item (e.g. create your Varsity account) moves up to
+  // Coming Up once it's within 2 days of its due date, instead of staying in Latest Updates.
+  if(!f.actionRequired || !f.dueDate) return false;
+  const due = new Date(f.dueDate+"T00:00:00");
+  const daysUntil = Math.round((due-now)/86400000);
+  return daysUntil>=0 && daysUntil<=2;
+}
+
 function renderFeed(){
   const now = new Date(); now.setHours(0,0,0,0);
-  const active = feed.filter(f=>!f.expires || new Date(f.expires+"T00:00:00")>=now);
+  const active = feed.filter(f=>{
+    if(isActionPromoted(f, now)) return false; // moved up to Coming Up instead
+    const postDate = new Date(f.date+"T00:00:00");
+    const weekCutoff = new Date(postDate); weekCutoff.setDate(weekCutoff.getDate()+7); // remove after 7 full days, latest
+    let cutoff = weekCutoff;
+    if(f.expires){
+      const expiresCutoff = new Date(f.expires+"T00:00:00"); expiresCutoff.setDate(expiresCutoff.getDate()+1);
+      if(expiresCutoff < cutoff) cutoff = expiresCutoff;
+    }
+    return now < cutoff;
+  });
   const sorted = [...active].sort((a,b)=>new Date(a.date)-new Date(b.date));
   const card = document.getElementById('feedCard');
   if(sorted.length===0){
     card.innerHTML = `<p style="margin:0;font-size:13.5px;color:var(--text-muted);">Nothing time-sensitive right now — check the Comp Schedule and Events tabs for what's ahead.</p>`;
     return;
   }
-  const tagLabel = {new:'New', practice:'Practice', event:'Event', deadline:'Coming up'};
   card.innerHTML = sorted.map(f=>`
     <div class="feed-item">
       <div class="feed-date">${new Date(f.date+"T00:00:00").toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
       <div class="feed-body">
-        ${f.tag!=='practice' ? `<span class="badge ${f.tag}">${tagLabel[f.tag]||f.tag}</span>` : ''}<b>${f.title}</b>
+        <b>${f.title}</b>
         <p>${f.body}</p>
       </div>
     </div>
@@ -1276,7 +1293,10 @@ function renderFeed(){
 function renderUpcomingEvents(){
   const now = new Date(); now.setHours(0,0,0,0);
   const {monday, sunday} = currentWeekRange();
-  const upcoming = fundraisers
+  const promotedFeed = feed
+    .filter(f=>isActionPromoted(f, now))
+    .map(f=>({emoji:f.emoji||"📝", title:f.title, date:f.dueDate, end:f.dueDate, meta:f.body}));
+  const upcoming = [...fundraisers, ...promotedFeed]
     .filter(f=>{
       const d = new Date((f.date||f.end)+"T00:00:00");
       return d>=now && d>=monday && d<=sunday;
