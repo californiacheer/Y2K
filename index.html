@@ -1311,7 +1311,7 @@ function renderUpcomingEvents(){
     const d = new Date((f.date||f.end)+"T00:00:00");
     const month = d.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
     const day = d.getDate();
-    const timeMatch = f.meta ? f.meta.match(/\d{1,2}:\d{2}\s*[ap]\.?m?\.?/i) : null;
+    const timeMatch = f.meta ? f.meta.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?\s*[ap]\.?m?\.?/i) : null;
     const timeBit = timeMatch ? timeMatch[0] : null;
     const meta = [timeBit, fmtRange(f.date||f.end, f.end||f.date)].filter(Boolean).join(' · ');
     return `
