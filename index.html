@@ -1098,8 +1098,8 @@ const feed = [
   {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"\"Fight for the Cure\" shirt pre-order — closes 9/16", body:'CALI\'s breast cancer awareness tee — 100% of proceeds go to UCSD Moore\'s Cancer Center. Pre-order only, closes Wed 9/16 at midnight, delivered first week of October. <a href="https://caliproshop.com/collections/pre-orders" target="_blank">Order now →</a>'},
   {date:"2026-09-15", expires:"2026-09-16", tag:"deadline", title:"Dance Choreo schedule coming 9/15", body:"CALI is finalizing the full Dance Choreo schedule for all teams — expect it posted by Tuesday, Sept 15."},
   {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>', actionRequired:true, dueDate:"2026-09-16"},
-  {date:"2026-09-14", tag:"event", title:"New: Rangers Stunt Clinic — Sept 19", body:"5:00–7:00 PM · $55/person · partner stunting, double base stunts, group stunts &amp; flexibility — open to all levels and ages, bases and flyers. Email didi@californiaallstars.com to sign up — see the Events tab for full details.", eventDate:"2026-09-19"},
-  {date:"2026-09-15", tag:"event", title:"New: GLOW Stunt Clinic — Oct 17", body:"6:00–8:30 PM · $50/athlete (+$10 for a commemorative tee) · stunt clinic with the reigning NCA &amp; back-to-back World Champs. Venmo $50 to @GLOWLAG (include athlete's name &amp; age) — see the Events tab for full details.", eventDate:"2026-10-17"}
+  {date:"2026-09-19", postedDate:"2026-09-14", tag:"event", title:"New: Rangers Stunt Clinic — Sept 19", body:"5:00–7:00 PM · $55/person · partner stunting, double base stunts, group stunts &amp; flexibility — open to all levels and ages, bases and flyers. Email didi@californiaallstars.com to sign up — see the Events tab for full details."},
+  {date:"2026-10-17", postedDate:"2026-09-15", tag:"event", title:"New: GLOW Stunt Clinic — Oct 17", body:"6:00–8:30 PM · $50/athlete (+$10 for a commemorative tee) · stunt clinic with the reigning NCA &amp; back-to-back World Champs. Venmo $50 to @GLOWLAG (include athlete's name &amp; age) — see the Events tab for full details."}
 ];
 
 const fundraisers = [
@@ -1267,8 +1267,8 @@ function isActionPromoted(f, now){
 function isEventInCurrentWeek(f, monday, sunday){
   // A feed item announcing an event (e.g. a new clinic) hides itself from Latest Updates
   // once that event is already showing in Coming Up, so it never appears in both places.
-  if(!f.eventDate) return false;
-  const d = new Date(f.eventDate+"T00:00:00");
+  if(f.tag!=='event') return false;
+  const d = new Date(f.date+"T00:00:00");
   return d>=monday && d<=sunday;
 }
 
@@ -1278,7 +1278,9 @@ function renderFeed(){
   const active = feed.filter(f=>{
     if(isActionPromoted(f, now)) return false; // moved up to Coming Up instead
     if(isEventInCurrentWeek(f, monday, sunday)) return false; // already showing in Coming Up
-    const postDate = new Date(f.date+"T00:00:00");
+    // postDate is when the item was ADDED (drives the "new" 7-day window) — f.date is always
+    // the real date shown on the card (event date, due date, etc.) and never used for that math.
+    const postDate = new Date((f.postedDate||f.date)+"T00:00:00");
     const weekCutoff = new Date(postDate); weekCutoff.setDate(weekCutoff.getDate()+7); // "new" for 7 full days after being posted, latest
     let cutoff = weekCutoff;
     if(f.expires){
