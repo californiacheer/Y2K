@@ -309,19 +309,22 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 }
 .comp-header{
   padding:16px 18px; cursor:pointer; user-select:none;
-  display:grid; grid-template-columns:auto 1fr auto auto; gap:16px; align-items:center;
+  display:flex; align-items:flex-start; gap:14px;
 }
-@media (max-width:640px){.comp-header{grid-template-columns:auto 1fr auto; gap:8px;}
-  .comp-header .comp-chevron{grid-column:1/-1; text-align:right; margin-top:-4px;}}
-.comp-num{
-  font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; color:var(--text-muted);
-  background:var(--surface-2); width:30px; height:30px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+.comp-datebadge{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  width:58px; flex:0 0 58px; border-radius:12px; padding:8px 2px;
+  background:var(--accent-soft); font-family:'Oswald',sans-serif;
 }
+.comp-datebadge .cdb-mon{font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); display:block;}
+.comp-datebadge .cdb-day{font-size:21px; font-weight:700; line-height:1.15; color:var(--accent-ink); font-variant-numeric:tabular-nums; display:block;}
+.comp-datebadge .cdb-yr{font-size:10px; color:var(--text-muted); font-weight:600; margin-top:1px; display:block;}
+.comp-main{flex:1; min-width:0; padding-top:1px;}
 .comp-name{font-size:16px; font-weight:700;}
-.comp-loc{font-size:13.5px; color:var(--text-muted); margin-top:2px;}
-.comp-dates{font-size:13px; color:var(--text-muted); margin-top:4px; font-variant-numeric:tabular-nums;}
-.comp-chevron{font-size:13px; color:var(--text-muted); align-self:center; transition:transform .15s ease;}
+.comp-loc{font-size:13.5px; color:var(--text-muted); margin-top:3px; display:flex; align-items:flex-start; gap:5px;}
+.comp-loc svg{flex:0 0 auto; margin-top:2px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+.comp-chevron{color:var(--text-muted); align-self:flex-start; transition:transform .2s ease, color .2s ease; margin-top:2px; display:flex;}
 .comp-card.open .comp-chevron{transform:rotate(180deg);}
 .tag{
   font-size:11px; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
@@ -330,17 +333,64 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 .tag.local{background:var(--success-soft); color:var(--success);}
 .tag.overnight{background:var(--warn-soft); color:var(--warn);}
 .tag.required{background:var(--danger-soft); color:var(--danger);}
-.tag-stack{display:flex; flex-direction:column; gap:6px; align-items:flex-end;}
-@media (max-width:640px){.tag-stack{flex-direction:row; align-items:center; flex-wrap:wrap;}}
-.comp-details{display:none; padding:0 18px 16px;}
+.comp-details{display:none; padding:12px 18px 16px; border-top:1px dashed var(--border);}
 .comp-card.open .comp-details{display:block;}
 .travel-detail{
-  margin-top:0; padding-top:12px; border-top:1px dashed var(--border);
   font-size:13.5px; color:var(--text-muted); line-height:1.6;
 }
 .travel-detail b{color:var(--text); font-weight:600;}
 .travel-detail>div{margin-bottom:7px;}
 .travel-detail>div:last-child{margin-bottom:0;}
+.travel-detail:empty{display:none; margin:0;}
+
+/* structured detail sections */
+.compx-section{padding-top:14px; border-top:1px dashed var(--border); margin-top:14px;}
+.comp-details>.compx-section:first-child,
+.travel-detail:empty + .compx-section{margin-top:0; padding-top:0; border-top:none;}
+.compx-section-label{
+  font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted);
+  display:flex; align-items:center; gap:6px; margin-bottom:11px;
+}
+.compx-section-label .cxl-ic{color:var(--accent); display:flex;}
+.compx-row{display:flex; align-items:center; gap:12px;}
+.compx-row-icon{
+  width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.compx-row-main{flex:1; min-width:0;}
+.compx-row-title{font-size:13.5px; font-weight:600;}
+.compx-row-sub{font-size:12.5px; color:var(--text-muted); margin-top:2px; line-height:1.4;}
+.compx-row-cta{
+  flex:0 0 auto; font-size:12.5px; font-weight:700; color:#fff; background:var(--accent);
+  padding:8px 14px; border-radius:9px; text-decoration:none; white-space:nowrap;
+}
+.compx-row-cta.soon{background:var(--warn-soft); color:var(--warn);}
+.compx-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.compx-gcard{
+  border:1px solid var(--border); border-radius:12px; padding:12px 13px; display:flex; flex-direction:column; gap:7px;
+  text-decoration:none; color:inherit; background:var(--surface);
+}
+.compx-gcard:hover{border-color:var(--accent); background:var(--accent-soft);}
+.compx-gcard .gc-ic{width:26px; height:26px; border-radius:8px; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center;}
+.compx-gcard .gc-lbl{font-size:12.5px; font-weight:700; line-height:1.25;}
+.compx-gcard .gc-sub{font-size:11px; color:var(--accent); font-weight:600;}
+.compx-gcard.soon .gc-ic{background:var(--warn-soft); color:var(--warn);}
+.compx-gcard.soon .gc-sub{color:var(--text-muted); font-weight:500;}
+.compx-gcard.soon:hover{border-color:var(--border); background:var(--surface);}
+.compx-toggle-row{display:flex; align-items:center; justify-content:space-between; gap:14px;}
+.compx-toggle-row+.compx-toggle-row{margin-top:14px;}
+.compx-toggle-copy{flex:1; min-width:0;}
+.compx-toggle-title{font-size:13.5px; font-weight:600;}
+.compx-toggle-sub{font-size:12px; color:var(--text-muted); margin-top:2px; line-height:1.4;}
+.compx-seg{display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; flex:0 0 auto;}
+.compx-seg button{border:none; background:var(--surface); padding:7px 15px; font-size:12.5px; font-weight:700; color:var(--text-muted); cursor:pointer; font-family:inherit;}
+.compx-seg button.active{background:var(--accent); color:#fff;}
+.compx-travel-detail{display:none; margin-top:10px; flex-direction:column; gap:8px;}
+.compx-travel-detail.show{display:flex;}
+.compx-travel-detail input{
+  font-size:12.5px; padding:8px 10px; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface-2); color:var(--text); font-family:inherit; width:100%;
+}
 
 /* practice cards */
 .day-pill{
@@ -353,7 +403,7 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 .practice-time{font-size:13px; color:var(--text-muted); font-variant-numeric:tabular-nums;}
 .practice-extra{font-size:12px; color:var(--text-muted); margin:-6px 0 10px;}
 .practice-bow-note{font-size:11.5px; color:var(--text-muted); text-align:center; margin-top:7px;}
-.practice-full-img{width:100%; border-radius:10px; display:block;}
+.practice-full-img{width:60%; max-width:150px; margin:0 auto; border-radius:10px; display:block;}
 
 /* booking tracker (comp schedule) */
 .booking-tracker{grid-column:1/-1; margin-top:10px; padding-top:12px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:8px;}
@@ -624,7 +674,6 @@ main{max-width:1040px;padding:30px 24px 72px;}
 
 .comp-card{border-radius:18px;}
 .comp-header{padding:18px 20px;}
-.comp-num{background:#eaf4ff;color:#0f6fd0;}
 .comp-name{font-size:17px;}
 .tag{border-radius:999px;padding:5px 10px;}
 .practice-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
@@ -676,10 +725,13 @@ footer .foot-org{color:#cbd5e1;}
 /* Comps other San Marcos teams attend that Y2K doesn't */
 .comp-card.not-attending{background:#f6f7f9;box-shadow:none;}
 .comp-card.not-attending .comp-header:hover{background:#eef0f3;}
-.comp-card.not-attending .comp-num{background:#e7e9ee;color:#9aa2b1;}
+.comp-card.not-attending .comp-datebadge{background:#e7e9ee;}
+.comp-card.not-attending .comp-datebadge .cdb-mon{color:#9aa2b1;}
+.comp-card.not-attending .comp-datebadge .cdb-day{color:#7b8494;}
 .comp-card.not-attending .comp-name{color:#7b8494;}
 .comp-card.not-attending .comp-loc,.comp-card.not-attending .comp-dates{color:#a1a8b5;}
-.comp-card.not-attending .comp-chevron{background:#e7e9ee;color:#8a93a3;}
+.comp-card.not-attending .comp-chevron{color:#a1a8b5;}
+.comp-card.not-attending .comp-header:hover .comp-chevron{background:#e7e9ee;color:#8a93a3;}
 .comp-card.not-attending .comp-expand{color:#8a93a3;}
 
 /* Booking/travel placeholder treatments */
@@ -694,9 +746,13 @@ footer .foot-org{color:#cbd5e1;}
 /* Competition cards clearly advertise that they expand */
 .comp-header{cursor:pointer;transition:background .16s ease;}
 .comp-header:hover{background:#f8fbff;}
-.comp-expand{align-self:center;display:flex;align-items:center;gap:7px;color:#0f6fd0;font-size:12px;font-weight:700;white-space:nowrap;}
-.comp-chevron{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#edf6ff;color:#0f6fd0;font-size:17px;transition:transform .18s ease,background .18s ease;}
-.comp-card.open .comp-chevron{transform:rotate(180deg);background:#dceeff;}
+.comp-expand{align-self:center;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.comp-chevron{
+  width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:transparent;color:#98a2b3;transition:transform .2s cubic-bezier(.4,0,.2,1),background .18s ease,color .18s ease;
+}
+.comp-header:hover .comp-chevron{background:#eef4fb;color:#0f6fd0;}
+.comp-card.open .comp-chevron{transform:rotate(180deg);background:#eaf3ff;color:#0f6fd0;}
 
 /* Team Calendar */
 :root{
@@ -846,10 +902,11 @@ footer .foot-org{color:#cbd5e1;}
       <span>2026–27 Competition Schedule</span>
     </div>
     <div class="expand-collapse-ctrl" style="display:flex; justify-content:flex-end; margin:-8px 0 14px;">
-      <a href="#" id="expandCollapseToggle" onclick="toggleExpandAll();return false;">Expand all</a>
       <a href="#" id="viewAllToggle" onclick="toggleShowAllComps();return false;">Show all comps</a>
+      <a href="#" id="pastCompsToggle" onclick="togglePastComps();return false;">Past comps</a>
     </div>
     <div id="allCompsNote" class="note" style="display:none; margin:-2px 0 14px;">Showing every CALI San Marcos team's comp this season. Events grayed out are ones <b>Y2K isn't attending</b> — expand a card to see which teams are.</div>
+    <div id="pastCompsNote" class="note" style="display:none; margin:-2px 0 14px;">Showing comps that already happened.</div>
     <div id="compList"></div>
   </section>
 
@@ -1097,7 +1154,6 @@ const programFees = [
 const feed = [
   {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"\"Fight for the Cure\" shirt pre-order — closes 9/16", body:'CALI\'s breast cancer awareness tee — 100% of proceeds go to UCSD Moore\'s Cancer Center. Pre-order only, closes Wed 9/16 at midnight, delivered first week of October. <a href="https://caliproshop.com/collections/pre-orders" target="_blank">Order now →</a>'},
   {date:"2026-09-28", expires:"2026-09-28", tag:"deadline", title:"Cookie Dough Fundraiser — closes 9/28", body:'Online fundraiser, ships direct to the buyer — profit is 50% on sales, 80% on donations, credited straight to the athlete\'s iClass account. Sales end midnight Mon 9/28. <a href="https://6q39gws4.r.us-east-1.awstrack.me/L0/https:%2F%2Ffiles.iclasspro.com%2F32838%2Fstudents%2F1789628624.REGISTRATION_INSTRUCTIONS_for_California_All_Stars_ALL_GROUPS.pdf/1/010001a0b01a92a0-f7f4ce2b-f83f-4d66-977b-4b973593f0f9-000000/_6wWomUBcYKu1RjakRj-0fwabjU=473" target="_blank">Registration info (PDF) →</a>'},
-  {date:"2026-09-15", expires:"2026-09-16", tag:"deadline", title:"Dance Choreo schedule coming 9/15", body:"CALI is finalizing the full Dance Choreo schedule for all teams — expect it posted by Tuesday, Sept 15."},
   {date:"2026-09-16", expires:"2026-09-16", tag:"deadline", title:"Create your Varsity account by 9/16", body:'Needed to register for Varsity-run comps (ACSC, Spirit Sports, USA, NCA). <a href="https://events.myvarsity.com/account/invitation?token=ef6ff5cd63ef4cb2a496366ac286f769" target="_blank">Create account →</a>', actionRequired:true, dueDate:"2026-09-16"},
   {date:"2026-09-19", postedDate:"2026-09-14", tag:"event", title:"New: Rangers Stunt Clinic — Sept 19", body:"5:00–7:00 PM · $55/person · partner stunting, double base stunts, group stunts &amp; flexibility — open to all levels and ages, bases and flyers. Email didi@californiaallstars.com to sign up — see the Events tab for full details."},
   {date:"2026-10-17", postedDate:"2026-09-15", tag:"event", title:"New: GLOW Stunt Clinic — Oct 17", body:"6:00–8:30 PM · $50/athlete (+$10 for a commemorative tee) · stunt clinic with the reigning NCA &amp; back-to-back World Champs. Venmo $50 to @GLOWLAG (include athlete's name &amp; age) — see the Events tab for full details."}
@@ -1107,7 +1163,6 @@ const fundraisers = [
   {emoji:"🤸‍♀️", title:"Friday practices starting", date:"2026-09-11", end:"2026-09-11", meta:"Fridays effective 9/11/26 — Y2K 6:30–8:30 PM."},
   {emoji:"🎬", title:"Sparkle Movie Night", date:"2026-09-12", end:"2026-09-12", meta:"Sat, Sep 12, 2026 · doors 7:00p, movie 7:45p, pickup 9:30p · $10/person (incl. popcorn), concessions $1–2 · Cali Gym parking lot", extra:"Showing: Bring It On",
     pay:["Cash at the door","Zelle: 562-240-3450 (Karin)","Venmo: search \"Karin\" — confirm exact @handle in team chat"]},
-  {emoji:"💃", title:"Dance Choreo", meta:"Date TBD — CALI is finalizing the full schedule for all teams."},
   {emoji:"🤸", title:"Rangers Stunt Clinic", date:"2026-09-19", end:"2026-09-19", meta:"Sat, Sep 19, 2026 · 5:00–7:00 PM · $55/person · Partner stunting, double base stunts, group stunts &amp; flexibility — open to all levels and ages, bases and flyers.", extra:"Email didi@californiaallstars.com to sign up"},
   {emoji:"🤸", title:"GLOW Stunt Clinic", date:"2026-10-17", end:"2026-10-17", meta:"Sat, Oct 17, 2026 · 6:00–8:30 PM · $50/athlete · Stunt clinic with the reigning NCA &amp; back-to-back World Champs. Includes a special commemorative bow, free action shots, and pizza.", extra:"Add $10 for a commemorative GLOW tee (sizes YS–AL) — include shirt size in your Venmo note.",
     pay:["Venmo $50 to @GLOWLAG — include athlete's name and age"]},
@@ -1348,19 +1403,51 @@ function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/
 function loadBooking(){ try{ return JSON.parse(localStorage.getItem('y2k_booking')||'{}'); }catch(e){ return {}; } }
 function saveBooking(state){ try{ localStorage.setItem('y2k_booking', JSON.stringify(state)); }catch(e){} }
 
-function bookingRow(field, checked, detail, link, checkLabel, detailPlaceholder){
+function dateBadgeParts(iso){
+  const d = new Date(iso+"T00:00:00");
+  return { mon: d.toLocaleDateString('en-US',{month:'short'}).toUpperCase(), day: d.getDate(), yr: d.getFullYear() };
+}
+function fmtDayDate(iso){
+  const d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString('en-US',{weekday:'short', month:'short', day:'numeric'});
+}
+const ICON_PIN='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 21c-4-4.5-7-8.2-7-11.5A7 7 0 0 1 19 9.5C19 12.8 16 16.5 12 21z"/></svg>';
+const ICON_PLANE='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-8-8 20-3-8-8-3z"/></svg>';
+const ICON_BED='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-6 9 6v11M9 21v-6h6v6"/></svg>';
+const ICON_LINK='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15l6-6M8 7l1.3-1.3a4 4 0 0 1 5.7 5.7L14 12M16 17l-1.3 1.3a4 4 0 0 1-5.7-5.7L10 12"/></svg>';
+const ICON_CAMERA='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/></svg>';
+const ICON_CAL='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
+const ICON_CHECK='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11"/></svg>';
+const ICON_CHEVRON='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+
+function gcard(icon, label, sub, url, soon){
+  const cls = 'compx-gcard' + (soon?' soon':'');
+  const inner = `<div class="gc-ic">${icon}</div><div class="gc-lbl">${label}</div><div class="gc-sub">${sub}</div>`;
+  return url ? `<a class="${cls}" href="${url}" target="_blank">${inner}</a>` : `<div class="${cls}">${inner}</div>`;
+}
+function travelToggleRow(field, yes, detail, link, title, sub, placeholder){
   const safeDetail = (detail||'').replace(/"/g,'&quot;');
   const safeLink = (link||'').replace(/"/g,'&quot;');
-  return `<div class="booking-row ${checked?'is-booked':''}">
-    <label class="booking-check-label"><input type="checkbox" class="booking-check" data-field="${field}" ${checked?'checked':''}> <span>${checked?'✓ '+checkLabel:checkLabel}</span></label>
-    <input type="text" class="booking-link-input" data-field="${field}Detail" placeholder="${detailPlaceholder}" value="${safeDetail}">
-    <input type="text" class="booking-link-input" data-field="${field}Link" placeholder="Add confirmation link (optional)" value="${safeLink}">
-    ${link?`<a class="booking-link-view" href="${link}" target="_blank">View confirmation ↗</a>`:''}
-  </div>`;
+  return `<div class="compx-toggle-row">
+      <div class="compx-toggle-copy">
+        <div class="compx-toggle-title">${title}</div>
+        <div class="compx-toggle-sub">${sub}</div>
+      </div>
+      <div class="compx-seg compx-toggle-seg" data-field="${field}">
+        <button type="button" data-yes="1" class="${yes?'active':''}">Yes</button>
+        <button type="button" data-yes="0" class="${!yes?'active':''}">No</button>
+      </div>
+    </div>
+    <div class="compx-travel-detail ${yes?'show':''}">
+      <input type="text" class="booking-link-input" data-field="${field}Detail" placeholder="${placeholder}" value="${safeDetail}">
+      <input type="text" class="booking-link-input" data-field="${field}Link" placeholder="Add confirmation link (optional)" value="${safeLink}">
+      ${link?`<a href="${link}" target="_blank" style="font-size:12.5px;font-weight:600;color:var(--accent);">View confirmation ↗</a>`:''}
+    </div>`;
 }
 
 let openComps = new Set();
 let showAllComps = false;
+let showPastComps = false;
 function updateExpandCollapseLabel(){
   const cards = document.querySelectorAll('#compList .comp-card');
   const allOpen = cards.length>0 && Array.from(cards).every(el=>el.classList.contains('open'));
@@ -1393,15 +1480,27 @@ function toggleShowAllComps(){
   document.getElementById('allCompsNote').style.display = showAllComps ? 'block' : 'none';
   renderComps();
 }
+function togglePastComps(){
+  showPastComps = !showPastComps;
+  document.getElementById('pastCompsToggle').textContent = showPastComps ? 'Upcoming comps' : 'Past comps';
+  document.getElementById('pastCompsNote').style.display = showPastComps ? 'block' : 'none';
+  renderComps();
+}
 
 function renderComps(){
   const booking = loadBooking();
-  const visible = competitions.map((c,i)=>({c,i})).filter(o=>showAllComps || o.c.attending!==false);
+  const now = new Date(); now.setHours(0,0,0,0);
+  const visible = competitions.map((c,i)=>({c,i})).filter(o=>{
+    const teamMatch = showAllComps || o.c.attending!==false;
+    const isPast = new Date((o.c.end||o.c.start)+"T00:00:00") < now;
+    return teamMatch && (showPastComps ? isPast : !isPast);
+  });
   document.getElementById('compList').innerHTML = visible.map((o,j)=>{
     const c = o.c, i = o.i;
     const isAttending = c.attending!==false;
     const slug = slugify(c.name);
     const bk = booking[slug] || {};
+    const badge = dateBadgeParts(c.start);
     const tags = [];
     if(!isAttending){
       tags.push(`<div class="tag not-attending">Not attending</div>`);
@@ -1429,36 +1528,82 @@ function renderComps(){
     }
 
     let extra = '';
-    let bookingHtml = '';
+    let sectionsHtml = '';
     let calHtml = '';
+
     if(!isAttending){
       extra += `<div><b>Teams attending:</b> ${c.teams||'TBA'}</div>`;
-      extra += `<div class="linkline"><a href="${mapsLink(c.address)}" target="_blank">📍 Directions</a></div>`;
+      sectionsHtml += `<div class="compx-section">
+        <div class="compx-section-label"><span class="cxl-ic">${ICON_LINK}</span>Resources</div>
+        <div class="compx-grid">${gcard(ICON_PIN,'Directions','Open in Maps →', mapsLink(c.address))}</div>
+      </div>`;
     } else {
-      const linkBits = [];
-      linkBits.push(`<a href="${mapsLink(c.address)}" target="_blank">📍 Directions</a>`);
-      if(c.travel==='local') linkBits.push(`<a href="${hotelsLink(c.address)}" target="_blank">🏨 Hotels nearby</a>`);
-      if(c.flightSearch) linkBits.push(`<a href="${flightsLink(c.flightSearch)}" target="_blank">✈️ Search flights</a>`);
-
       if(c.detail) extra += `<div>${c.detail}</div>`;
       if(c.note) extra += `<div>${c.note}</div>`;
-      if(c.bookingDate) extra += `<div class="tocome">Hotel booking opens ${fmtDate(c.bookingDate)}</div>`;
-      if(c.bookingLinks) extra += c.bookingLinks.map(bl=>bl.url
-          ? `<div class="linkline">🔗 <a href="${bl.url}" target="_blank">${bl.label}</a></div>`
-          : `<div class="tocome">${bl.label}: link to come</div>`).join('');
-      extra += c.photosLink
-          ? `<div class="linkline">📸 <a href="${c.photosLink}" target="_blank">Comp photos</a></div>`
-          : `<div class="tocome">📸 Comp photos: link to come</div>`;
-      extra += c.rosterLink
-          ? `<div class="linkline">📋 <a href="${c.rosterLink}" target="_blank">${c.rosterLabel || 'Division roster'}</a></div>`
-          : `<div class="tocome">📋 Division roster: link to come</div>`;
-      extra += `<div class="linkline">${linkBits.join(' &nbsp;·&nbsp; ')}</div>`;
+
+      if(c.travelStart && c.travelEnd){
+        sectionsHtml += `<div class="compx-section">
+          <div class="compx-section-label"><span class="cxl-ic">${ICON_PLANE}</span>Travel Dates</div>
+          <div class="compx-row">
+            <div class="compx-row-main"><div class="compx-row-title">Arrive ${fmtDayDate(c.travelStart)} &nbsp;·&nbsp; Depart ${fmtDayDate(c.travelEnd)}</div></div>
+          </div>
+        </div>`;
+      }
+
+      if(c.bookingDate || (c.bookingLinks && c.bookingLinks.length)){
+        const primary = c.bookingLinks && c.bookingLinks[0];
+        const opensDate = c.bookingDate ? new Date(c.bookingDate+"T00:00:00") : null;
+        const isOpen = !opensDate || now >= opensDate;
+        let row;
+        if(isOpen){
+          if(primary && primary.url){
+            row = `<div class="compx-row">
+              <div class="compx-row-main"><div class="compx-row-title">Book your team block hotel</div></div>
+              <a class="compx-row-cta" href="${primary.url}" target="_blank">Book Hotel</a>
+            </div>`;
+          } else {
+            row = `<div class="compx-row">
+              <div class="compx-row-main"><div class="compx-row-title">Booking link coming soon</div></div>
+            </div>`;
+          }
+        } else {
+          row = `<div class="compx-row">
+            <div class="compx-row-main">
+              <div class="compx-row-title">Opens ${fmtDate(c.bookingDate)}</div>
+              ${primary ? `<div class="compx-row-sub">${primary.label}</div>` : ''}
+            </div>
+            ${primary && primary.url ? `<a class="compx-row-cta soon" href="${primary.url}" target="_blank">View info</a>` : ''}
+          </div>`;
+        }
+        sectionsHtml += `<div class="compx-section"><div class="compx-section-label"><span class="cxl-ic">${ICON_BED}</span>Hotel Booking</div>${row}</div>`;
+      }
+
+      const gcards = [];
+      gcards.push(gcard(ICON_PIN,'Directions','Open in Maps →', mapsLink(c.address)));
+      if(c.travel==='local') gcards.push(gcard(ICON_BED,'Hotels nearby','View hotel list →', hotelsLink(c.address)));
+      if(c.flightSearch) gcards.push(gcard(ICON_PLANE,'Search flights','Find flights →', flightsLink(c.flightSearch)));
+      gcards.push(c.photosLink
+        ? gcard(ICON_CAMERA,'Comp photos','View photos →', c.photosLink)
+        : gcard(ICON_CAMERA,'Comp photos','Link coming soon', null, true));
+      gcards.push(c.rosterLink
+        ? gcard(ICON_CAL,'Comp Schedule','View →', c.rosterLink)
+        : gcard(ICON_CAL,'Comp Schedule','Link coming soon', null, true));
+      if(c.bookingLinks) c.bookingLinks.slice(1).forEach(bl=>{
+        gcards.push(bl.url ? gcard(ICON_LINK, bl.label, 'View →', bl.url) : gcard(ICON_LINK, bl.label, 'Link coming soon', null, true));
+      });
+      sectionsHtml += `<div class="compx-section">
+        <div class="compx-section-label"><span class="cxl-ic">${ICON_LINK}</span>Resources</div>
+        <div class="compx-grid">${gcards.join('')}</div>
+      </div>`;
 
       if(c.flightSearch || c.housing){
-        bookingHtml += `<div class="booking-tracker" data-slug="${slug}">`;
-        if(c.flightSearch) bookingHtml += bookingRow('air', !!bk.air, bk.airDetail, bk.airLink, 'Airfare booked', 'Airline / flight # (optional)');
-        if(c.housing) bookingHtml += bookingRow('hotel', !!bk.hotel, bk.hotelDetail, bk.hotelLink, 'Hotel booked', 'Hotel name (optional)');
-        bookingHtml += `</div>`;
+        let travelRows = '';
+        if(c.flightSearch) travelRows += travelToggleRow('air', !!bk.air, bk.airDetail, bk.airLink, 'Booked your flight?', 'Once you say yes, you can log the flight # for the family calendar.', 'Airline / flight # (optional)');
+        if(c.housing) travelRows += travelToggleRow('hotel', !!bk.hotel, bk.hotelDetail, bk.hotelLink, 'Booked your hotel?', 'Once you say yes, you can log the hotel name for the family calendar.', 'Hotel name (optional)');
+        sectionsHtml += `<div class="compx-section" data-slug="${slug}">
+          <div class="compx-section-label"><span class="cxl-ic">${ICON_CHECK}</span>My Travel</div>
+          ${travelRows}
+        </div>`;
       }
 
       calHtml = `<div class="cal-add-row">📅 <a href="${gcalLink(c,bk)}" target="_blank">Add to Google Calendar</a> &nbsp;·&nbsp; <a href="${outlookLink(c,bk)}" target="_blank">Add to Outlook</a>
@@ -1466,45 +1611,52 @@ function renderComps(){
       </div>`;
     }
 
+    const isPastCard = new Date((c.end||c.start)+"T00:00:00") < now;
     return `
-    <div class="comp-card ${openComps.has(i)?'open':''} ${!isAttending?'not-attending':''}" id="comp-${i}">
+    <div class="comp-card ${openComps.has(i)?'open':''} ${!isAttending?'not-attending':''} ${isPastCard?'is-past':''}" id="comp-${i}">
       <div class="comp-header" onclick="toggleComp(${i})">
-        <div class="comp-num">${j+1}</div>
-        <div>
-          <div class="comp-name">${c.name}</div>
-          <div class="comp-loc">${c.loc}</div>
-          <div class="comp-dates">${c.dateLabel || fmtRange(c.start,c.end)}</div>
+        <div class="comp-datebadge ${(!isAttending||isPastCard)?'not-attending':''}">
+          <span class="cdb-mon">${badge.mon}</span><span class="cdb-day">${badge.day}</span><span class="cdb-yr">${badge.yr}</span>
         </div>
-        <div class="tag-stack">${tags.join('')}</div>
-        <div class="comp-expand"><span class="comp-chevron">⌄</span></div>
+        <div class="comp-main">
+          <div class="comp-name">${c.name}</div>
+          <div class="comp-loc">${ICON_PIN}<span>${c.loc}</span></div>
+          <div class="tag-row">${tags.join('')}</div>
+        </div>
+        <div class="comp-expand"><span class="comp-chevron">${ICON_CHEVRON}</span></div>
       </div>
       <div class="comp-details">
         <div class="travel-detail">${extra}</div>
-        ${bookingHtml}
+        ${sectionsHtml}
         ${calHtml}
       </div>
     </div>`;
   }).join('');
 
-  document.querySelectorAll('.booking-tracker').forEach(tracker=>{
-    const slug = tracker.dataset.slug;
-    tracker.querySelectorAll('.booking-check').forEach(cb=>{
-      cb.addEventListener('change', ()=>{
+  document.querySelectorAll('.compx-toggle-seg').forEach(seg=>{
+    seg.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const section = seg.closest('.compx-section');
+        const slug = section.dataset.slug;
+        const field = seg.dataset.field;
+        const yes = btn.dataset.yes === '1';
         const state = loadBooking();
         state[slug] = state[slug] || {};
-        state[slug][cb.dataset.field] = cb.checked;
+        state[slug][field] = yes;
         saveBooking(state);
         renderComps();
       });
     });
-    tracker.querySelectorAll('.booking-link-input').forEach(inp=>{
-      inp.addEventListener('change', ()=>{
-        const state = loadBooking();
-        state[slug] = state[slug] || {};
-        state[slug][inp.dataset.field] = inp.value.trim();
-        saveBooking(state);
-        renderComps();
-      });
+  });
+  document.querySelectorAll('.compx-travel-detail input').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      const section = inp.closest('.compx-section');
+      const slug = section.dataset.slug;
+      const state = loadBooking();
+      state[slug] = state[slug] || {};
+      state[slug][inp.dataset.field] = inp.value.trim();
+      saveBooking(state);
+      renderComps();
     });
   });
   updateExpandCollapseLabel();
