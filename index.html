@@ -2397,11 +2397,15 @@ function dismissNotifBanner(){
   try{ localStorage.setItem('notifBannerDismissed','1'); }catch(e){}
 }
 function enableNotifications(){
-  if(!window.OneSignalDeferred){ dismissNotifBanner(); return; }
-  window.OneSignalDeferred.push(async function(OneSignal){
-    try{ await OneSignal.Notifications.requestPermission(); }catch(e){}
-    dismissNotifBanner();
-  });
+  // Must call this synchronously inside the click, with no await/queue in
+  // between — iOS Safari only shows the permission popup if the request
+  // happens immediately inside the user's tap.
+  try{
+    if(window.OneSignal && window.OneSignal.Notifications){
+      window.OneSignal.Notifications.requestPermission();
+    }
+  }catch(e){}
+  dismissNotifBanner();
 }
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 window.OneSignalDeferred.push(function(OneSignal){
