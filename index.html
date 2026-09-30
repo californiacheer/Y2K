@@ -11,17 +11,6 @@
 <meta name="apple-mobile-web-app-title" content="Y2K Hub">
 <meta name="description" content="California All Stars Y2K team hub — schedule, calendar, packing lists, and updates for team parents.">
 <style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(function(OneSignal) {
-    OneSignal.init({
-      appId: "1fae236d-5cc8-4433-bf80-347ee0d72538",
-      serviceWorkerParam: { scope: "/" },
-      serviceWorkerPath: "service-worker.js"
-    });
-  });
-</script>
 <title>Y2K Team Hub</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap');
@@ -272,25 +261,6 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 .suggest-reload-btn svg{width:15px; height:15px; flex:0 0 auto;}
 .suggest-reload-btn svg path{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 
-/* notification opt-in banner */
-.notif-banner{
-  display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--border);
-  border-radius:14px; padding:13px 14px; margin-bottom:16px; box-shadow:var(--shadow);
-}
-.notif-banner.hidden{display:none;}
-.notif-banner .notif-icon{
-  flex:0 0 auto; width:38px; height:38px; border-radius:10px; background:var(--surface-2);
-  display:flex; align-items:center; justify-content:center; font-size:18px;
-}
-.notif-banner .notif-text{flex:1; min-width:0;}
-.notif-banner .notif-text b{display:block; font-size:13.5px;}
-.notif-banner .notif-text span{font-size:12px; color:var(--text-muted);}
-.notif-banner .notif-actions{display:flex; align-items:center; gap:4px; flex:0 0 auto;}
-.notif-btn-yes{
-  background:var(--accent); color:#fff; border:none; border-radius:20px;
-  padding:8px 15px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;
-}
-.notif-btn-no{background:none; border:none; color:var(--text-muted); font-size:17px; cursor:pointer; padding:4px 7px; line-height:1;}
 
 .section-title{
   font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
@@ -1042,17 +1012,6 @@ header.top .header-star{display:none;}
 
   <!-- HOME -->
   <section class="panel active" id="panel-home">
-    <div class="notif-banner hidden" id="notifBanner">
-      <div class="notif-icon">🔔</div>
-      <div class="notif-text">
-        <b>Get notified about new updates</b>
-        <span>New posts &amp; deadline reminders, right on your phone</span>
-      </div>
-      <div class="notif-actions">
-        <button class="notif-btn-yes" type="button" onclick="enableNotifications()">Enable</button>
-        <button class="notif-btn-no" type="button" onclick="dismissNotifBanner()" aria-label="Dismiss">✕</button>
-      </div>
-    </div>
     <div class="hero-grid" id="heroGrid"></div>
 
     <div class="section-title">Coming up</div>
@@ -2389,35 +2348,6 @@ renderPhotos();
 renderCalendar();
 document.querySelectorAll('#checklistToggle .seg-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===checklistView));
 renderChecklist();
-
-// ---------- NOTIFICATIONS ----------
-function dismissNotifBanner(){
-  const el = document.getElementById('notifBanner');
-  if(el) el.classList.add('hidden');
-  try{ localStorage.setItem('notifBannerDismissed','1'); }catch(e){}
-}
-function enableNotifications(){
-  // Must call this synchronously inside the click, with no await/queue in
-  // between — iOS Safari only shows the permission popup if the request
-  // happens immediately inside the user's tap.
-  try{
-    if(window.OneSignal && window.OneSignal.Notifications){
-      window.OneSignal.Notifications.requestPermission();
-    }
-  }catch(e){}
-  dismissNotifBanner();
-}
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-window.OneSignalDeferred.push(function(OneSignal){
-  try{
-    const dismissed = localStorage.getItem('notifBannerDismissed');
-    const alreadyOn = OneSignal.Notifications && OneSignal.Notifications.permission;
-    if(!dismissed && !alreadyOn){
-      const el = document.getElementById('notifBanner');
-      if(el) el.classList.remove('hidden');
-    }
-  }catch(e){}
-});
 </script>
 
 <script>
