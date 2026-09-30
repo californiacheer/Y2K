@@ -1,3 +1,7 @@
+// Merges in OneSignal's push-notification handling so this one service worker
+// covers both offline caching and push, at the same scope.
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
 // Y2K Team Hub — service worker
 // Strategy: network-first. Every time the app opens with a signal, it fetches
 // the latest version from the server and quietly updates the cache — that's
