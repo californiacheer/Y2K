@@ -252,6 +252,14 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 @media (max-width:760px){
   .suggest-embed iframe{height:660px;}
 }
+.suggest-reload-btn{
+  display:flex; align-items:center; justify-content:center; gap:8px; width:100%;
+  margin:12px 0 14px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px;
+  padding:11px 13px; font-size:13.5px; font-weight:600; color:var(--text); cursor:pointer; font-family:inherit;
+}
+.suggest-reload-btn:hover{border-color:var(--accent); color:var(--accent);}
+.suggest-reload-btn svg{width:15px; height:15px; flex:0 0 auto;}
+.suggest-reload-btn svg path{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 
 .section-title{
   font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
@@ -1149,8 +1157,12 @@ header.top .header-star{display:none;}
         See something that needs updating, or have news to share with the team? Submit it below — it's reviewed before it's added to the Latest Updates feed on the Home tab.
       </p>
       <div class="suggest-embed">
-        <iframe src="https://form.jotform.com/262726762778069" title="Suggest a Y2K Update" loading="lazy">Loading…</iframe>
+        <iframe id="suggestFrame" src="https://form.jotform.com/262726762778069" title="Suggest a Y2K Update" loading="lazy">Loading…</iframe>
       </div>
+      <button type="button" class="suggest-reload-btn" onclick="document.getElementById('suggestFrame').src='https://form.jotform.com/262726762778069?r='+Date.now();">
+        <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+        Submit Another Update
+      </button>
     </div>
   </section>
 
