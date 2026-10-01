@@ -1009,6 +1009,19 @@ header.top .header-star{display:none;}
   header.top{min-height:0; padding:env(safe-area-inset-top) 0 0;}
 }
 
+
+/* quick links: tidy 2-column grid on phones, 3 on wider screens */
+.linkrow{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px;}
+.linkbtn{min-height:50px; line-height:1.2; padding:8px 10px; gap:7px; font-size:13px;}
+.linkbtn .ico{flex:0 0 auto;}
+.linkbtn.wide{grid-column:1/-1; justify-content:center; background:var(--accent); color:#fff; border-color:var(--accent);}
+.linkbtn.wide:hover{background:var(--accent); color:#fff; opacity:.92;}
+@media (min-width:700px){ .linkrow{grid-template-columns:repeat(3,minmax(0,1fr));} }
+/* makeup tutorial video modal */
+.video-modal{position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.85); display:flex; align-items:center; justify-content:center; padding:16px;}
+.video-modal[hidden]{display:none;}
+.video-modal video{max-width:100%; max-height:calc(100% - 60px); border-radius:14px; background:#000;}
+.video-modal .vm-close{position:absolute; top:calc(12px + env(safe-area-inset-top,0px)); right:14px; width:40px; height:40px; border-radius:50%; border:0; background:rgba(255,255,255,.9); font-size:22px; line-height:40px; cursor:pointer;}
 </style>
 </head>
 <body>
@@ -1053,6 +1066,7 @@ header.top .header-star{display:none;}
     <div class="section-title">Quick links</div>
     <div class="card">
       <div class="linkrow">
+        <a class="linkbtn wide" href="#" onclick="openTutorial();return false;"><span class="ico">▶️</span> Watch the Comp Makeup Tutorial</a>
         <a class="linkbtn" href="https://portal.iclasspro.com/calisanmarcos" target="_blank"><span class="ico">📅</span> iClass Portal</a>
         <a class="linkbtn" href="https://caliproshop.com" target="_blank"><span class="ico">🛍️</span> Cali Pro Shop</a>
         <a class="linkbtn" href="https://californiaallstarsproshop.com" target="_blank"><span class="ico">👕</span> Rebel Uniform Shop</a>
@@ -1200,6 +1214,16 @@ header.top .header-star{display:none;}
 
 </main>
 
+<div id="videoModal" class="video-modal" hidden onclick="closeTutorial()">
+  <button class="vm-close" aria-label="Close" onclick="closeTutorial()">×</button>
+  <video id="tutorialVideo" controls playsinline preload="none" onclick="event.stopPropagation()">
+    <source src="makeup-tutorial.mp4" type="video/mp4">
+  </video>
+</div>
+<script>
+function openTutorial(){const m=document.getElementById('videoModal');m.hidden=false;const v=document.getElementById('tutorialVideo');try{v.play();}catch(e){}}
+function closeTutorial(){const v=document.getElementById('tutorialVideo');v.pause();document.getElementById('videoModal').hidden=true;}
+</script>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
   <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
