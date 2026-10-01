@@ -338,6 +338,34 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
   .spaceman, .spark, .today-text{animation:none;}
 }
 
+/* "today" attention treatment — a due date or event happening today.
+   Pure CSS (no new images/gifs) so it stays lightweight. */
+@keyframes todayWiggle{
+  0%,100%{ transform:rotate(0deg) scale(1); }
+  20%{ transform:rotate(-8deg) scale(1.06); }
+  40%{ transform:rotate(7deg) scale(1.06); }
+  60%{ transform:rotate(-5deg) scale(1.02); }
+  80%{ transform:rotate(4deg) scale(1.02); }
+}
+.coming-row.today .coming-date-block{
+  background:var(--danger); border-color:var(--danger);
+  animation:todayWiggle 1.6s ease-in-out infinite;
+}
+.coming-row.today .coming-date-block span,
+.coming-row.today .coming-date-block b{ color:#fff; }
+.coming-row.today .coming-row-icon{
+  display:inline-block; animation:todayWiggle 1.6s ease-in-out infinite;
+}
+.pay-card.due-today .pay-icon{
+  animation:todayWiggle 1.6s ease-in-out infinite;
+}
+.pay-card.due-today .pay-due{ color:var(--danger); font-weight:700; }
+@media (prefers-reduced-motion: reduce){
+  .coming-row.today .coming-date-block,
+  .coming-row.today .coming-row-icon,
+  .pay-card.due-today .pay-icon{ animation:none; }
+}
+
 /* payment card */
 .pay-card{
   display:flex; align-items:center; gap:16px; flex-wrap:wrap;
@@ -386,6 +414,7 @@ main{max-width:980px; margin:0 auto; padding:20px 20px 60px;}
 .badge.deadline{background:var(--warn-soft); color:var(--warn);}
 .badge.fundraiser{background:var(--success-soft); color:var(--success);}
 .badge.past{background:var(--surface-2); color:var(--text-muted);}
+.badge.today{background:var(--danger-soft); color:var(--danger);}
 
 /* Coming Up — card grid */
 .coming-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px;}
@@ -968,7 +997,7 @@ main{max-width:1040px;padding:30px 24px 72px;}
 /* Y2K header banner image — replaces text lockup */
 header.top{
   position:relative; overflow:hidden; background:var(--ink-950); color:inherit;
-  padding:calc(11px + env(safe-area-inset-top)) 0 0; border-bottom:0; min-height:0;
+  padding:env(safe-area-inset-top) 0 0; border-bottom:0; min-height:0; line-height:0;
 }
 header.top:after{content:none!important;}
 header.top .header-star{display:none;}
@@ -976,7 +1005,7 @@ header.top .header-star{display:none;}
   display:block; width:100%; height:auto; margin:0;
 }
 @media (max-width:760px){
-  header.top{min-height:0; padding:calc(15px + env(safe-area-inset-top)) 0 0;}
+  header.top{min-height:0; padding:env(safe-area-inset-top) 0 0;}
 }
 
 </style>
@@ -1428,6 +1457,10 @@ function daysUntil(iso){
   const d = new Date(iso+"T00:00:00");
   return Math.round((d-now)/86400000);
 }
+function todayISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 function renderHero(){
   const upcoming = competitions.filter(c=>daysUntil(c.end)>=0).sort((a,b)=>new Date(a.start)-new Date(b.start));
   const nextComp = upcoming[0];
@@ -1466,14 +1499,14 @@ function renderHero(){
       </div>`
       ) : ''}
     </div>
-    <div class="pay-card">
+    <div class="pay-card${nextFeeDate && daysUntil(nextFeeDate)<=1 ? ' due-today' : ''}">
       <div class="pay-icon">💳</div>
       ${nextFeeDate ? `
         <div>
           <div class="pay-label">Next payment</div>
           <div class="pay-amount">$${dueTotal}</div>
         </div>
-        <div class="pay-due">${dueLabels}<br>Due ${fmtDate(nextFeeDate)} · ${daysUntil(nextFeeDate)} days away</div>
+        <div class="pay-due">${dueLabels}<br>${daysUntil(nextFeeDate)===0 ? 'Due TODAY' : daysUntil(nextFeeDate)===1 ? 'Due TOMORROW' : `Due ${fmtDate(nextFeeDate)} · ${daysUntil(nextFeeDate)} days away`}</div>
         <button class="pay-btn" id="feeToggleBtn" onclick="toggleFeeDetails()">View Details ›</button>
         <div class="fee-details" id="feeDetails" style="display:none;">
           ${upcomingFees.map(f=>`<div class="fee-row"><span>${fmtDate(f.date)} — ${f.label}</span><b>$${f.amount}</b></div>`).join('')}
@@ -1587,11 +1620,12 @@ function renderUpcomingEvents(){
     // Date already shown in the date block to the left — only add this subhead line when there's
     // a time to go with it; a no-time item would otherwise just repeat the same date as text.
     const meta = timeBit ? [timeBit, fmtRange(f.date||f.end, f.end||f.date)].filter(Boolean).join(' · ') : '';
+    const isToday = (f.date||f.end) === todayISO();
     return `
-      <div class="coming-row">
+      <div class="coming-row${isToday?' today':''}">
         <div class="coming-date-block"${f.logo?' style="padding:0;overflow:hidden;"':''}>${f.logo?`<img src="${marlonLogo}" style="width:100%;height:100%;object-fit:cover;border-radius:13px;">`:`<span>${month}</span><b>${day}</b>`}</div>
         <div class="coming-row-main">
-          <div class="coming-row-top"><span class="badge ${f.badgeType||(f.isDeadline?'deadline':'event')}">${f.badgeLabel||(f.isDeadline?'Deadline':'Event')}</span><span class="coming-row-icon">${f.emoji||'🎪'}</span></div>
+          <div class="coming-row-top"><span class="badge ${isToday?'today':(f.badgeType||(f.isDeadline?'deadline':'event'))}">${isToday?'Today':(f.badgeLabel||(f.isDeadline?'Deadline':'Event'))}</span><span class="coming-row-icon">${f.emoji||'🎪'}</span></div>
           <div class="coming-row-title">${f.title}</div>
           <div class="coming-row-meta">${meta}</div>
           ${f.meta && !timeBit ? `<div class="coming-row-desc">${f.meta}</div>` : ''}
