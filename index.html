@@ -1106,6 +1106,9 @@ html.pinkout .hero-fact svg{color:#ffd3e8;}
 html.pinkout .hero-countdown{border-color:rgba(255,255,255,.35);}
 html.pinkout .hero-star-deco{stroke:rgba(255,200,225,.3);}
 html.pinkout .countdown,html.pinkout .countdown-label,html.pinkout .hero-card .stat-value{color:#fff;}
+
+/* iOS zooms the whole page when a field under 16px gets focus - keep every field at 16px on phones */
+@media (max-width:760px){ input:not([type=checkbox]):not([type=radio]), select, textarea{ font-size:16px !important; } }
 </style>
 <script>(function(){try{var d=new Date(),k=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();if(k>=20261005&&k<=20261009)document.documentElement.classList.add('pinkout');}catch(e){}})();</script>
 </head>
