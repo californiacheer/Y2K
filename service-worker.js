@@ -1,12 +1,11 @@
 // Y2K Team Hub — service worker
-// Strategy: stale-while-revalidate. The app opens instantly from whatever
-// was cached last time (no black/white wait), while a fresh copy downloads
-// quietly in the background and gets swapped in for the *next* open — that's
-// still how parents get your edits automatically, no reinstall needed.
-// If there's no cache yet (first install) or the network fails with nothing
-// cached, it falls back to whatever it can get.
+// Strategy: network-first for the app shell (index.html), so edits show up
+// the moment you reopen the app — no "still showing the old version" lag.
+// Falls back to the cached copy only if the network is unreachable (offline).
+// Static assets (icons, manifest) use stale-while-revalidate since they
+// rarely change and instant load matters more for those.
 
-const CACHE_NAME = 'y2k-hub-v1';
+const CACHE_NAME = 'y2k-hub-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -34,6 +33,28 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const isAppShell = event.request.mode === 'navigate' ||
+    event.request.url.endsWith('/index.html') ||
+    event.request.url.endsWith('/');
+
+  if (isAppShell) {
+    // Network-first: always try to get the latest app content first.
+    // Only fall back to cache if the network is unavailable (offline).
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Everything else (icons, manifest): stale-while-revalidate.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const networkFetch = fetch(event.request)
@@ -47,14 +68,10 @@ self.addEventListener('fetch', (event) => {
         .catch(() => null);
 
       if (cached) {
-        // Serve the cached copy right away; the network response (if any)
-        // just refreshes the cache for the next time the app opens.
         event.waitUntil(networkFetch);
         return cached;
       }
 
-      // Nothing cached yet (first run on this device) — wait for the network,
-      // and fall back to the cached shell if that also fails.
       return networkFetch.then((response) => response || caches.match('./index.html'));
     })
   );
